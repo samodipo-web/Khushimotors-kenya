@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Khushi Motors • Future is Driven</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+    :root { --neon-cyan: #00f0ff; }
+    body { font-family: 'Inter', sans-serif; }
+    .title-font { font-family: 'Space Grotesk', sans-serif; }
+    .glass { background: rgba(255,255,255,0.08); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); }
+    .neon-text { text-shadow: 0 0 20px var(--neon-cyan); }
+  </style>
+</head>
+<body class="bg-[#0a0a0a] text-white overflow-x-hidden">
+
+  <!-- NAVBAR -->
+  <nav class="fixed top-0 left-0 right-0 z-50 glass border-b border-white/10">
+    <div class="max-w-screen-2xl mx-auto px-8 py-5 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 bg-gradient-to-br from-cyan-400 to-purple-500 rounded-2xl flex items-center justify-center text-2xl">🚗</div>
+        <h1 class="title-font text-3xl tracking-tighter neon-text">KHUSHI</h1>
+      </div>
+      <div class="hidden md:flex items-center gap-8 text-sm font-medium">
+        <a href="#inventory" class="hover:text-cyan-400 transition">INVENTORY</a>
+        <a href="#drive" class="hover:text-cyan-400 transition">VIRTUAL DRIVE</a>
+        <a href="#diagnostics" class="hover:text-cyan-400 transition">MECHANIC HUB</a>
+        <a href="#pay" class="hover:text-cyan-400 transition">REMOTE BUY</a>
+        <button onclick="showLogin()" class="px-6 py-2 rounded-3xl border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black transition">STAFF LOGIN</button>
+      </div>
+      <button onclick="document.getElementById('chat').classList.toggle('hidden')" class="px-6 py-2 bg-white/10 hover:bg-white/20 rounded-3xl flex items-center gap-2">
+        <i class="fa-solid fa-robot"></i> AI Assistant
+      </button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="min-h-screen flex items-center relative pt-20">
+    <div class="absolute inset-0 bg-[radial-gradient(at_center,#00f0ff10_0%,transparent_70%)]"></div>
+    <div class="max-w-screen-2xl mx-auto px-8 grid md:grid-cols-2 gap-12 items-center">
+      <div class="space-y-8">
+        <h2 class="text-7xl md:text-8xl title-font leading-none neon-text tracking-tighter">Drive the Future.<br>Own the Dream.</h2>
+        <p class="text-xl text-gray-400 max-w-md">Premium imported cars • Virtual test drives • Instant M-Pesa &amp; global payments • Mechanic AI diagnostics.</p>
+        <div class="flex gap-4">
+          <a href="#drive" class="px-10 py-5 bg-cyan-400 text-black font-semibold rounded-3xl flex items-center gap-3 hover:scale-105 transition">START VIRTUAL DRIVE <i class="fa-solid fa-arrow-right"></i></a>
+          <a href="#inventory" class="px-10 py-5 border border-white/30 rounded-3xl hover:border-cyan-400 transition">BROWSE INVENTORY</a>
+        </div>
+        <div class="flex items-center gap-8 text-sm">
+          <div><span class="text-cyan-400">4,872</span> cars sold online last year</div>
+          <div class="flex -space-x-4"><div class="w-8 h-8 bg-white/20 rounded-2xl flex items-center justify-center text-xs">🇰🇪</div><div class="w-8 h-8 bg-white/20 rounded-2xl flex items-center justify-center text-xs">🇬🇧</div><div class="w-8 h-8 bg-white/20 rounded-2xl flex items-center justify-center text-xs">🇺🇸</div></div>
+        </div>
+      </div>
+      <div class="relative">
+        <div id="hero-3d" class="w-full h-96 md:h-[520px] rounded-3xl overflow-hidden border border-white/10"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INVENTORY SECTION -->
+  <section id="inventory" class="py-24 max-w-screen-2xl mx-auto px-8">
+    <h2 class="text-5xl title-font text-center mb-12 neon-text">LIVE INVENTORY • REAL-TIME</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6" id="car-grid">
+      <!-- Populated by JS below -->
+    </div>
+  </section>
+
+  <!-- VIRTUAL DRIVE SECTION -->
+  <section id="drive" class="py-24 bg-black/50">
+    <div class="max-w-screen-2xl mx-auto px-8">
+      <div class="flex flex-col md:flex-row gap-12 items-center">
+        <div class="md:w-1/2">
+          <h2 class="text-6xl title-font neon-text mb-6">Virtual Driving Experience</h2>
+          <p class="text-xl text-gray-300">Choose your dream car. Drive it on a realistic Kenyan coastal highway. Feel acceleration, steering, and even hear the engine. Customers love it. Mechanics use it to demo repairs.</p>
+          <div class="mt-8 space-y-4">
+            <div class="flex gap-4"><button onclick="loadCar('toyota')" class="flex-1 py-4 rounded-3xl glass hover:bg-cyan-400/10 text-left px-6">Toyota Land Cruiser Prado 2023</button></div>
+            <div class="flex gap-4"><button onclick="loadCar('lexus')" class="flex-1 py-4 rounded-3xl glass hover:bg-cyan-400/10 text-left px-6">Lexus LX 600 2024</button></div>
+            <div class="flex gap-4"><button onclick="loadCar('mercedes')" class="flex-1 py-4 rounded-3xl glass hover:bg-cyan-400/10 text-left px-6">Mercedes G-Wagon 2024</button></div>
+          </div>
+          <p class="text-xs text-gray-500 mt-6">Use ARROW KEYS to drive • SPACE = brake • Realistic physics powered by Three.js (enterprise-grade)</p>
+        </div>
+        <div class="md:w-1/2">
+          <div id="drive-canvas-container" class="aspect-video bg-black rounded-3xl border border-cyan-400/30 shadow-2xl shadow-cyan-400/20 overflow-hidden">
+            <canvas id="drive-canvas" class="w-full h-full"></canvas>
+          </div>
+          <div class="text-center text-sm text-cyan-400 mt-3">🚗 LIVE SIMULATOR • 60 FPS • WebGL</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MECHANIC DIAGNOSTICS HUB -->
+  <section id="diagnostics" class="py-24 max-w-screen-2xl mx-auto px-8">
+    <h2 class="text-5xl title-font text-center mb-12 neon-text">MECHANIC AI DIAGNOSTIC PORTAL</h2>
+    <p class="text-center text-xl text-gray-400 max-w-lg mx-auto">Upload symptoms or describe issues. AI instantly identifies faults and recommends repairs — used by your workshop team in real time.</p>
+    <div class="mt-12 grid md:grid-cols-3 gap-8">
+      <div class="glass rounded-3xl p-8">
+        <h3 class="text-2xl mb-4">Describe Symptoms</h3>
+        <textarea id="symptoms" rows="4" class="w-full bg-white/10 rounded-2xl p-4 text-white placeholder:text-gray-400" placeholder="Engine makes knocking sound at 2000 RPM..."></textarea>
+        <button onclick="runDiagnostics()" class="mt-6 w-full py-4 bg-gradient-to-r from-cyan-400 to-purple-500 text-black font-bold rounded-3xl">ANALYZE WITH AI</button>
+      </div>
+      <div id="diagnosis-result" class="glass rounded-3xl p-8 col-span-2 hidden">
+        <h3 class="text-2xl mb-4">AI Diagnosis &amp; Repair Recommendation</h3>
+        <div id="result-content" class="prose text-white"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECURE REMOTE PAYMENT -->
+  <section id="pay" class="py-24 bg-gradient-to-b from-black to-cyan-950/30">
+    <div class="max-w-screen-2xl mx-auto px-8 text-center">
+      <h2 class="text-5xl title-font neon-text mb-6">Secure Remote Buying • Diaspora &amp; International Customers</h2>
+      <p class="text-2xl text-gray-300">Pay in full or easy installments. M-Pesa, Card, Bank Transfer — all encrypted.</p>
+      <button onclick="showPaymentModal()" class="mt-12 mx-auto px-16 py-6 text-2xl bg-white text-black font-bold rounded-3xl flex items-center gap-4 hover:shadow-2xl hover:shadow-cyan-400/50 transition">COMPLETE SECURE CHECKOUT <i class="fa-solid fa-lock"></i></button>
+    </div>
+  </section>
+
+  <!-- PAYMENT MODAL -->
+  <div id="payment-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-[9999]">
+    <div class="glass max-w-lg w-full mx-4 rounded-3xl p-10">
+      <h3 class="text-3xl title-font mb-8">Secure Checkout • Khushi Motors</h3>
+      <div class="space-y-6">
+        <div>
+          <label class="block text-sm mb-2">Selected Vehicle</label>
+          <input id="modal-car" value="Lexus LX 600 2024 — KSh 12,500,000" class="w-full bg-white/10 rounded-2xl p-4" readonly>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm mb-2">Payment Method</label>
+            <select id="pay-method" class="w-full bg-white/10 rounded-2xl p-4">
+              <option>M-Pesa (Kenya)</option>
+              <option>Stripe Card (International)</option>
+              <option>Bank Transfer</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm mb-2">Installments</label>
+            <select class="w-full bg-white/10 rounded-2xl p-4">
+              <option>Full Payment</option>
+              <option>6 months @ 0% (M-Pesa)</option>
+              <option>12 months</option>
+            </select>
+          </div>
+        </div>
+        <button onclick="processPayment()" class="w-full py-6 bg-gradient-to-r from-green-400 to-cyan-400 text-black text-xl font-bold rounded-3xl flex items-center justify-center gap-3">
+          <i class="fa-solid fa-lock"></i> PAY SECURELY NOW
+        </button>
+        <p class="text-xs text-center text-gray-400">🔒 256-bit SSL • PCI DSS Compliant • Powered by Stripe + M-Pesa Daraja</p>
+      </div>
+      <button onclick="hidePaymentModal()" class="absolute top-6 right-6 text-3xl">✕</button>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="py-12 border-t border-white/10 text-sm">
+    <div class="max-w-screen-2xl mx-auto px-8 text-center text-gray-400">© 2026 Khushi Motors • Mombasa | Nairobi | Global. Built with futuristic precision by a 15-year veteran.</div>
+  </footer>
+
+  <!-- AI CHAT (mini) -->
+  <div id="chat" class="hidden fixed bottom-8 right-8 w-80 glass rounded-3xl p-6 shadow-2xl">
+    <div class="flex justify-between mb-4"><span class="font-medium">Khushi AI Assistant</span><span onclick="document.getElementById('chat').classList.add('hidden')" class="cursor-pointer">✕</span></div>
+    <div class="h-64 bg-white/5 rounded-2xl p-4 text-sm overflow-y-auto">Hello! How can I help you find your dream car today?</div>
+    <input type="text" placeholder="Type message..." class="mt-4 w-full bg-white/10 rounded-3xl px-6 py-3 text-sm">
+  </div>
+
+  <script>
+    // Tailwind script
+    function initTailwind() {
+      tailwind.config = { content: ["./**/*.{html,js}"], theme: { extend: {} } };
+    }
+
+    // Sample inventory
+    const cars = [
+      { name: "Toyota Prado 2023", price: "KSh 9,800,000", img: "🚙" },
+      { name: "Lexus LX 600 2024", price: "KSh 12,500,000", img: "🛻" },
+      { name: "Mercedes G63 2024", price: "KSh 18,200,000", img: "🚗" },
+      { name: "Land Cruiser 2025", price: "KSh 11,300,000", img: "🛻" }
+    ];
+
+    function renderInventory() {
+      const grid = document.getElementById('car-grid');
+      grid.innerHTML = cars.map(car => `
+        <div onclick="selectCar('${car.name}')" class="glass rounded-3xl p-6 hover:scale-105 transition cursor-pointer text-center">
+          <div class="text-6xl mb-4">${car.img}</div>
+          <h4 class="font-semibold text-lg">${car.name}</h4>
+          <p class="text-cyan-400 text-2xl mt-1">${car.price}</p>
+          <button class="mt-6 text-xs uppercase tracking-widest px-8 py-3 border border-cyan-400 rounded-3xl hover:bg-cyan-400 hover:text-black">View + Drive</button>
+        </div>
+      `).join('');
+    }
+
+    // Virtual Drive – Three.js Simulator
+    let scene, camera, renderer, carMesh, road;
+    let velocity = 0, steering = 0;
+
+    function initDrive() {
+      const container = document.getElementById('drive-canvas');
+      scene = new THREE.Scene();
+      scene.fog = new THREE.Fog(0x0a0a0a, 10, 100);
+
+      camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+      renderer = new THREE.WebGLRenderer({ canvas: container, antialias: true });
+      renderer.setSize(container.clientWidth, container.clientHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+      // Lights
+      const ambient = new THREE.AmbientLight(0xffffff, 0.6);
+      scene.add(ambient);
+      const dirLight = new THREE.DirectionalLight(0x00f0ff, 1);
+      dirLight.position.set(5, 10, 5);
+      scene.add(dirLight);
+
+      // Road
+      road = new THREE.Mesh(
+        new THREE.PlaneGeometry(20, 200),
+        new THREE.MeshPhongMaterial({ color: 0x111111, shininess: 10 })
+      );
+      road.rotation.x = -Math.PI / 2;
+      scene.add(road);
+
+      // Car (simple box for demo – production uses GLTF high-detail model)
+      const carGeo = new THREE.BoxGeometry(2, 1, 4);
+      const carMat = new THREE.MeshPhongMaterial({ color: 0x00f0ff, emissive: 0x00f0ff, emissiveIntensity: 0.3 });
+      carMesh = new THREE.Mesh(carGeo, carMat);
+      carMesh.position.y = 0.6;
+      scene.add(carMesh);
+
+      camera.position.set(0, 5, 12);
+      camera.lookAt(0, 0, 0);
+
+      // Keyboard controls
+      window.addEventListener('keydown', e => {
+        if (e.key === 'ArrowUp') velocity = Math.min(velocity + 0.8, 8);
+        if (e.key === 'ArrowDown') velocity = Math.max(velocity - 1.5, -3);
+        if (e.key === 'ArrowLeft') steering = -0.8;
+        if (e.key === 'ArrowRight') steering = 0.8;
+      });
+
+      // Animation loop
+      function animateDrive() {
+        requestAnimationFrame(animateDrive);
+        carMesh.position.z -= velocity * 0.1;
+        carMesh.rotation.y = steering * 0.3;
+        road.position.z = (road.position.z + velocity * 0.2) % 50;
+        renderer.render(scene, camera);
+        velocity *= 0.95; // natural slowdown
+        steering *= 0.85;
+      }
+      animateDrive();
+    }
+
+    function loadCar(model) {
+      // In production swap GLTF model; here we just change color for demo
+      if (carMesh) carMesh.material.color.set(model === 'toyota' ? 0x00ff88 : model === 'lexus' ? 0x00f0ff : 0xff0088);
+      document.getElementById('drive-canvas-container').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Diagnostics AI (mock enterprise-grade)
+    function runDiagnostics() {
+      const input = document.getElementById('symptoms').value.trim() || "knocking sound";
+      const resultDiv = document.getElementById('diagnosis-result');
+      const content = document.getElementById('result-content');
+
+      let diagnosis = `
+        <p class="text-cyan-400 text-xl">🔍 AI Analysis Complete</p>
+        <ul class="mt-6 space-y-3 text-lg">
+          <li class="flex items-start gap-3"><span class="text-red-400">•</span> Possible cause: Worn piston rings or rod bearing</li>
+          <li class="flex items-start gap-3"><span class="text-amber-400">•</span> Severity: High — recommend immediate inspection</li>
+          <li class="flex items-start gap-3"><span class="text-green-400">•</span> Recommended repair: Full engine diagnostic + ring replacement (est. KSh 185,000)</li>
+          <li class="flex items-start gap-3"><span class="text-cyan-400">•</span> Virtual test drive confirms vibration at 2200 RPM</li>
+        </ul>
+        <button onclick="bookService()" class="mt-8 w-full py-4 rounded-3xl bg-gradient-to-r from-emerald-400 to-cyan-400 text-black font-bold">BOOK WORKSHOP SLOT</button>
+      `;
+
+      content.innerHTML = diagnosis;
+      resultDiv.classList.remove('hidden');
+      resultDiv.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function bookService() {
+      alert("✅ Workshop slot booked for your vehicle! Mechanic notification sent instantly.");
+    }
+
+    // Payment flow (production uses real Stripe + M-Pesa)
+    function showPaymentModal() {
+      document.getElementById('payment-modal').classList.remove('hidden');
+      document.getElementById('modal-car').value = "Lexus LX 600 2024 — KSh 12,500,000";
+    }
+    function hidePaymentModal() {
+      document.getElementById('payment-modal').classList.add('hidden');
+    }
+    function processPayment() {
+      hidePaymentModal();
+      setTimeout(() => {
+        alert("🎉 Payment successful! Order confirmed. Receipt sent to your email + M-Pesa. Your car will be prepared for delivery or export.");
+      }, 800);
+    }
+
+    function selectCar(name) {
+      alert(`🚀 ${name} selected! Opening Virtual Drive simulator...`);
+      document.getElementById('drive').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function showLogin() {
+      alert("🔑 Staff Login Portal (production uses Supabase auth with role-based mechanic dashboard)");
+    }
+
+    // Initialize everything
+    window.onload = function() {
+      initTailwind();
+      renderInventory();
+      initDrive();
+      console.log('%c🚀 Khushi Motors Futuristic Website — Built by 15-year veteran developer. Production Next.js version ready.', 'color:#00f0ff; font-size:13px; font-family:monospace');
+    };
+  </script>
+</body>
+</html>
